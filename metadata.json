@@ -1,0 +1,11 @@
+{
+  "name": "MasUtils",
+  "creator": "MassonNn",
+  "description": "Bag of utils for Hypixel Skyblock",
+  "requires": [
+    "Vigilance",
+    "requestV2"
+  ],
+  "version": "1.0.0",
+  "entry": "index.js"
+}
