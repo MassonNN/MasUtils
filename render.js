@@ -231,7 +231,7 @@ export function drawCoolWaypoint(x, y, z, r, g, b, { name = "", showDist = name 
     let loc5 = [Player.getRenderX() + (x + 0.5 - Player.getRenderX()) / (distToPlayer / distRender), Player.getRenderY() + Player.getPlayer()["func_70047_e"]() + (y + 2 + 20 * distToPlayer / 300 - (Player.getRenderY() + Player.getPlayer()["func_70047_e"]())) / (distToPlayer / distRender), Player.getRenderZ() + (z + 0.5 - Player.getRenderZ()) / (distToPlayer / distRender)]
     let loc6 = [Player.getRenderX() + (x + 0.5 - Player.getRenderX()) / (distToPlayer / distRender), Player.getRenderY() + Player.getPlayer()["func_70047_e"]() + (y + 2 + 20 * distToPlayer / 300 - 10 * distToPlayer / 300 - (Player.getRenderY() + Player.getPlayer()["func_70047_e"]())) / (distToPlayer / distRender), Player.getRenderZ() + (z + 0.5 - Player.getRenderZ()) / (distToPlayer / distRender)]
 
-    if (name != "") Tessellator.drawString("\xA7" + nameColor + name, loc5[0], loc5[1], loc5[2], 0, true, distRender / 300, false)
+    if (name != "") Tessellator.drawString("\xA7" + nameColor + name, loc5[0], loc5[1], loc5[2], 0, true, distRender / 280, false)
     if (showDist) Tessellator.drawString("\xA7b(" + addCommas(Math.round(distanceText)) + "m)", name ? loc6[0] : loc5[0], name ? loc6[1] : loc5[1], name ? loc6[2] : loc5[2], 0, false, distRender / 300, false)
   }
 }

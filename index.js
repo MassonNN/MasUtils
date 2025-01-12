@@ -1,30 +1,69 @@
-import { drawCoolWaypoint } from "./render.js"
+import Settings from "./settings"
+import { PersistentData } from "./persistent/data";
+import { trace, drawCoolWaypoint } from './render'
+import { traces, waypoints } from './utils'
 
-let jungleCheeseCoords = undefined;
-let guardians = [];
-
-register("worldLoad", () => {
-  jungleCheeseCoords = undefined;
-});
-
-// register("command", (args) => {
-//   let x = ~~Player.getX();
-//   let y = ~~Player.getY();
-//   let z = ~~Player.getZ();
-//   jungleCheeseCoords = [x, y, z]
-//   ChatLib.chat("&c[MasUtils] Waypoint for Jungle Cheese created!")
-// }).setName("junglecheese").setAliases(["jch"]);
+let scanEntities = false;
+export let data = new PersistentData();
 
 register("renderWorld", () => {
-  if (jungleCheeseCoords != undefined) {
-    drawCoolWaypoint(jungleCheeseCoords[0], jungleCheeseCoords[1], jungleCheeseCoords[2], 40, 150, 220, { name: "Jungle Cheese", phase: true, nameColor: "c" })
+  waypoints.forEach(waypoint => {
+      drawCoolWaypoint(
+          waypoint.x, waypoint.y, waypoint.z, 
+          Settings.traceColor.getRed() / 255, 
+          Settings.traceColor.getGreen() / 255, 
+          Settings.traceColor.getBlue() / 255, 
+          { name: waypoint.text, phase: true, nameColor: "3", alpha: Settings.traceColor.getAlpha() / 255,  }
+      )
+  });
+
+  traces.forEach(d_trace => {
+    trace(
+      d_trace.x + 0.5, d_trace.y + 0.5, d_trace.z + 0.5, 
+      Settings.traceColor.getRed() / 255, 
+      Settings.traceColor.getGreen() / 255, 
+      Settings.traceColor.getBlue() / 255, 
+      Settings.traceColor.getAlpha() / 255, 
+      Settings.traceThickness + 1
+    )
+  });
+  
+  if (scanEntities) {
+    World.getAllEntities().forEach(entity => {
+      drawCoolWaypoint(
+        entity.getX(), entity.getY(), entity.getZ(), 
+        Settings.traceColor.getRed() / 255, 
+        Settings.traceColor.getGreen() / 255, 
+        Settings.traceColor.getBlue() / 255, 
+        { name: entity.getName(), phase: true, nameColor: "c", alpha: Settings.traceColor.getAlpha() / 255,  }
+      )
+    })
   }
 })
 
 
-register("renderEntity", (entity, position, partialTicks, event) => {
-  if (entity.getName().includes("Kalhuiki Door Guardian") && jungleCheeseCoords == undefined) {
-    jungleCheeseCoords = [~~entity.getX() + 61, ~~entity.getY() - 44, ~~entity.getZ() + 18]
-    ChatLib.chat("&c[MasUtils] Found Door Guardian and created Jungle cheese waypoint!")
+register("command", (args1, ...args) => {
+  if (args1 == undefined) {
+    Settings.openGUI();
+    return;
+  } else {
+    switch(args1.toLowerCase()) {
+        case "settings":
+        default:
+            Settings.openGUI();
+    }
   }
-});
+  
+}).setTabCompletions(
+    ["settings", ]
+).setCommandName("mu", true)
+
+register("gameUnload", () => {
+  data.save()
+})
+
+import './features/mineshafts/spawn'
+import './features/mineshafts/party'
+import './features/mineshafts/corpse'
+import './features/mineshafts/stats'
+import './features/nucleus/jungleTemple'

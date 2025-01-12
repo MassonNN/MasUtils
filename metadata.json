@@ -4,7 +4,8 @@
   "description": "Bag of utils for Hypixel Skyblock",
   "requires": [
     "Vigilance",
-    "requestV2"
+    "requestV2",
+    "Promise"
   ],
   "version": "1.0.0",
   "entry": "index.js"
