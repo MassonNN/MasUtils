@@ -94,12 +94,11 @@ class Settings {
   mineshaftWaypoint = false;
 
   @SwitchProperty({
-    name: 'Mineshaft Commands',
-    description: 'Enable mineshaft party commands (!help)',
-    category: 'Mining',
-    subcategory: 'Mineshafts'
+    name: 'Party Commands',
+    description: 'Enable party commands (!help)',
+    category: 'General',
   })
-  mineshaftCommands = false;
+  partyCommands = false;
 
   @ColorProperty({
     name: 'Color of mineshaft trace',
@@ -138,7 +137,6 @@ class Settings {
 
     this.addDependency('Auto Warp to Mineshaft', 'Mineshaft Party Mode');
     this.addDependency('Auto Transfer Party', 'Mineshaft Party Mode');
-    this.addDependency('Mineshaft Commands', 'Mineshaft Party Mode');
     this.addDependency('Custom text on Mineshaft spawn', 'Mineshaft Party Mode');
     this.addDependency('Color of mineshaft trace', 'Mineshaft Waypoint');
   }

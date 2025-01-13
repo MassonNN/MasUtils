@@ -4,7 +4,7 @@ import {
     removeWaypoints, removeTraces, sendModMessage, sendErrorMessage
 } from '../../utils';
 import { ERRORS } from '../error';
-import { getCorpsesCount, verifyCorpses, isCorpseTABLoaded, scanCorpses } from './corpse';
+import { getCorpsesCountFromTAB, verifyCorpses, isCorpseTABLoaded, scanCorpses } from './corpse';
 
 let detectTypeTries = 0;
 const MINESHAFT_TYPES = Object.freeze({
@@ -160,7 +160,7 @@ export function detectMineshaftType() {
 
 let hintTries = 0;
 function sendMineshaftHint(type) {
-    let corpsesCount = getCorpsesCount();
+    let corpsesCount = getCorpsesCountFromTAB();
     if (corpsesCount == 0) {
         if (hintTries > 3) {
             hintTries = 0;
@@ -168,7 +168,7 @@ function sendMineshaftHint(type) {
             return;
         }
         hintTries++;
-        setTimeout(() => {sendMineshaftHint(type)}, (2000+Server.getPing())*hintTries)
+        setTimeout(() => {sendMineshaftHint(type)}, 1000*hintTries)
         return;
     }
     // var profit = 0;

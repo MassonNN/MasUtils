@@ -104,6 +104,14 @@ export function getCorpsesCount() {
     return count;
 }
 
+export function getCorpsesCountFromTAB() {
+    var count = 0;
+    getCorpsesCountFromTAB().forEach((value, _type) => {
+        count += value;
+    })
+    return count;
+}
+
 register('worldLoad', () => {
     removeWaypoints()
     removeTraces()

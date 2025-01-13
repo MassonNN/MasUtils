@@ -1,6 +1,7 @@
 
 [general]
 	check_for_updates = true
+	party_commands = false
 	master_switch = true
 
 [dev]
@@ -13,7 +14,7 @@
 
 	[mining.mineshafts]
 		auto_warp_to_mineshaft = true
-		mineshaft_commands = true
+		mineshaft_commands = false
 		mineshaft_corpse_finder = true
 		custom_text_on_mineshaft_spawn = "Found mineshaft! (About to warp)"
 		mineshaft_party_mode = false

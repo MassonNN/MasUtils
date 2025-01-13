@@ -1,17 +1,30 @@
-import { executeCommand, getplayername } from '../../utils';
+import { executeCommand, getplayername, sendModMessage } from '../../utils';
 import { mineshaftSpawned } from './spawn'
 import Settings from '../../settings'
 
 const S03_PACKET_TIME_UPDATE = Java.type(
     "net.minecraft.network.play.server.S03PacketTimeUpdate"
 );
+const C16PacketClientStatus = Java.type(
+    "net.minecraft.network.play.client.C16PacketClientStatus"
+);
+const S37PacketStatistics = Java.type(
+    "net.minecraft.network.play.server.S37PacketStatistics"
+);
+const S01PacketJoinGame = Java.type(
+    "net.minecraft.network.play.server.S01PacketJoinGame"
+);
+const System = Java.type("java.lang.System");
 
 let requestedTPS = false;
+let requestedPing = false;
+let lastPing = null;
+let lastPingAt = null;
 let prevTime = null;
 let noWarp = [];
 
 register("chat", (player, message) => {
-    if (Settings.mineshaftCommands == false) return;
+    if (Settings.partyCommands == false) return;
     message = message.split(" ");
     let playername = getplayername(player)
     switch (message[0].toLowerCase()) {
@@ -29,7 +42,7 @@ register("chat", (player, message) => {
             executeCommand(`pc [MasUtils] Waiting for TPS check...`)
             break;
         case "!ping":
-            executeCommand(`pc [MasUtils] PING: ${Server.getPing()}`)
+            executeCommand(`pc [MasUtils] PING: ${~~lastPing}`)
             break;
         case "!fps":
             executeCommand(`pc [MasUtils] FPS: ${Client.getFps()}`)
@@ -77,6 +90,39 @@ register("packetReceived", (packet) => {
       prevTime = Date.now();
     }
   });
+
+
+function checkPing() {
+    if (!requestedPing) {
+        Client.sendPacket(new C16PacketClientStatus(C16PacketClientStatus.EnumState.REQUEST_STATS))
+        lastPingAt = System.nanoTime()
+        requestedPing = true
+    }
+}
+
+register('step', () => {
+    checkPing()
+}).setDelay(2)
+
+register('packetReceived', () => {
+	if (lastPingAt > 0) {
+		let diff = Math.abs((System.nanoTime() - lastPingAt) / 1_000_000)
+		lastPingAt *= -1
+		lastPing = diff
+		requestedPing = false
+	}
+}).setFilteredClass(S37PacketStatistics)
+
+register('packetReceived', () => {
+	if (lastPingAt > 0) {
+		lastPingAt = -1
+		requestedPing = false
+	}
+}).setFilteredClass(S01PacketJoinGame)
+
+register("command", () => {
+    sendModMessage(`PING: ${~~lastPing}`)
+}).setName("muping")
 
 function kickToNoWarp () {
     noWarp.forEach(playername => {
