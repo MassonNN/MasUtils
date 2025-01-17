@@ -179,9 +179,9 @@ function sendMineshaftHint(type) {
 
 register('step', () => {
     if (detectMineshaftType() != MINESHAFT_TYPES.UNDEF && Settings.corpseFinder) {
-        if (verifyCorpses() == false) {
-            removeWaypoints()
-            scanCorpses()
-        }
+        // if (verifyCorpses() == false) {
+        removeWaypoints()
+        scanCorpses()
+        // }
     }
 }).setDelay(2)

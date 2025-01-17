@@ -62,12 +62,14 @@ register("chat", (player, message) => {
             let umber = 0;
             let vanguard = 0;
             Player.getInventory().getItems().forEach(item => {
-                if (item.getName().removeFormatting().toLowerCase().includes("tungsten"))
-                    tungsten += item.getStackSize()
-                if (item.getName().removeFormatting().toLowerCase().includes("umber"))
-                    umber += item.getStackSize()
-                if (item.getName().removeFormatting().toLowerCase().includes("vanguard"))
-                    vanguard += item.getStackSize()
+                if (item != null) {
+                    if (item.getName().removeFormatting().toLowerCase().includes("tungsten"))
+                        tungsten += item.getStackSize()
+                    if (item.getName().removeFormatting().toLowerCase().includes("umber"))
+                        umber += item.getStackSize()
+                    if (item.getName().removeFormatting().toLowerCase().includes("vanguard"))
+                        vanguard += item.getStackSize()
+                }
             })
             executeCommand(`pc [MasUtils] Tungsten: ${tungsten} | Umber: ${umber} | Vanguard: ${vanguard}`)
             break;

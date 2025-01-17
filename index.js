@@ -1,7 +1,7 @@
 import Settings from "./settings"
 import { PersistentData } from "./persistent/data";
 import { trace, drawCoolWaypoint } from './render'
-import { traces, waypoints } from './utils'
+import { sendModMessage, traces, waypoints, addWaypoint } from './utils'
 
 let scanEntities = false;
 export let data = new PersistentData();
@@ -30,12 +30,19 @@ register("renderWorld", () => {
   
   if (scanEntities) {
     World.getAllEntities().forEach(entity => {
+      let alpha = Settings.traceColor.getAlpha() / 2 / 255;
+      if (entity.getName().includes("Butterfly")) {
+        alpha = Settings.traceColor.getAlpha() / 255;
+        trace(entity.getX(), entity.getY(), entity.getZ(), Settings.traceColor.getRed() / 255, 
+        Settings.traceColor.getGreen() / 255, 
+        Settings.traceColor.getBlue() / 255, alpha, 3)
+      }
       drawCoolWaypoint(
         entity.getX(), entity.getY(), entity.getZ(), 
         Settings.traceColor.getRed() / 255, 
         Settings.traceColor.getGreen() / 255, 
         Settings.traceColor.getBlue() / 255, 
-        { name: entity.getName(), phase: true, nameColor: "c", alpha: Settings.traceColor.getAlpha() / 255,  }
+        { name: entity.getName(), phase: true, nameColor: "c", alpha: alpha,  }
       )
     })
   }
@@ -56,11 +63,23 @@ register("command", (args1, ...args) => {
   
 }).setTabCompletions(
     ["settings", ]
-).setCommandName("mu", true)
+).setCommandName("MasUtils", true).setAliases(["mu", "masutil", "mutil", "mumenu"])
 
 register("gameUnload", () => {
   data.save()
 })
+
+register("command", () => {
+  data.telemetry.game_sessions += 1;
+  data.save()
+  written_data = new PersistentData();
+  sendModMessage(`Current game sessions: ${written_data.telemetry.game_sessions}`)
+}).setCommandName("musavetest", true)
+
+
+register("command", () => {
+  addWaypoint("Test", ~~Player.getX(), ~~Player.getY(), ~~Player.getZ())
+}).setCommandName("muwaypoint", true)
 
 import './features/mineshafts/spawn'
 import './features/mineshafts/party'

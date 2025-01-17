@@ -34,6 +34,7 @@ export function foundCorpse(data, corpseType, loots) {
     });
     if (Settings.debug) 
         sendModMessage(`&rWrite corpse of type &3${corpseType}&r and &3${loots.length}&r loot(s)`)
+    sendModMessage(`&rTotal profit of ${corpseType}: &30$&r!`)
 }
 
 /**
@@ -43,8 +44,8 @@ export function foundCorpse(data, corpseType, loots) {
  */
 export function adaptLootString(lootString) {
     var matches = lootRegex.exec(lootString)
-    if (matches != null && matches.length == 2) {
-        return new CorpseLoot(matches[0], matches[1])
+    if (matches != null && matches.length == 3) {
+        return new CorpseLoot(matches[1], matches[2])
     }
     return false;
 }

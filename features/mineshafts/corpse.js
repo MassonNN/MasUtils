@@ -1,4 +1,4 @@
-import { addWaypoint, removeTraces, removeWaypoints } from "../../utils";
+import { addWaypoint, removeTraces, removeWaypoints, sendModMessage } from "../../utils";
 import { Counter  } from "../../lovejs";
 
 const EntityArmorStand = Java.type("net.minecraft.entity.item.EntityArmorStand");
@@ -59,7 +59,7 @@ export function scanCorpses() {
     curCorpses.clear()
     const entities = World.getAllEntitiesOfType(EntityArmorStand.class).filter(a => a?.getName() == "Armour Stand" && !a.isInvisible())
     entities.forEach(entity => {
-        let helmetName = new EntityLivingBase(entity.getEntity()).getItemInSlot(4)?.getName()?.removeFormatting().toString()
+        let helmetName = new EntityLivingBase(entity.getEntity()).getItemInSlot(4)?.getName()?.removeFormatting()?.toString()
         let corpseType;
         switch (helmetName) {
             case "Lapis Armor Helmet":
@@ -106,7 +106,7 @@ export function getCorpsesCount() {
 
 export function getCorpsesCountFromTAB() {
     var count = 0;
-    getCorpsesCountFromTAB().forEach((value, _type) => {
+    getCorpsesFromTAB().forEach((value, _type) => {
         count += value;
     })
     return count;

@@ -16,7 +16,7 @@ import {
     return categories.indexOf(a.name) - categories.indexOf(b.name);
   },
   getSubcategoryComparator: () => (a, b) => {
-    const subcategories = ['Nucleus Runs', 'Gemstone Mining', 'Mineshafts'];
+    const subcategories = ['Nucleus Runs', 'Gemstone Mining', 'Mineshafts', 'Vanguard', 'Rift'];
     return subcategories.indexOf(a.name) - subcategories.indexOf(b.name);
   },
 })
