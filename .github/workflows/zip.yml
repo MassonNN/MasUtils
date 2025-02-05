@@ -11,8 +11,8 @@ jobs:
         type: 'zip'
         filename: 'MasUtils.zip'
         exclusions: '*.git* /*node_modules/* .editorconfig *.toml *.md LICENSE'
-    - uses: ncipollo/release-action@v1.12.0
     - name: Upload Release
+      uses: ncipollo/release-action@v1.12.0
       with:
         artifacts: "MasUtils.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
