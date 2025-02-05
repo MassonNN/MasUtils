@@ -11,9 +11,6 @@ jobs:
         type: 'zip'
         filename: 'MasUtils.zip'
         exclusions: '*.git* /*node_modules/* .editorconfig *.toml *.md LICENSE'
-  upload:
-    runs-on: ubuntu-latest
-    steps:
     - uses: ncipollo/release-action@v1.12.0
     - name: Upload Release
       with:
