@@ -11,12 +11,17 @@ jobs:
         type: 'zip'
         filename: 'MasUtils.zip'
         exclusions: '*.git* /*node_modules/* .editorconfig *.toml *.md LICENSE'
+    - name: Get release
+      id: get_release
+      uses: bruceadams/get-release@v1.3.2
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
     - name: Upload ZIP as a release asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ github.event.release.upload_url }}
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
         asset_path: ./MasUtils.zip
         asset_name: MasUtils.zip
         asset_content_type: application/zip
