@@ -1,6 +1,4 @@
-# MasUtils - bag of utils for Hypixel Skyblock
-## DEPRECATED
-### to be archieved
+# [DEPRECATED!] MasUtils - bag of utils for Hypixel Skyblock
 
 ### made by MassonNn
 
